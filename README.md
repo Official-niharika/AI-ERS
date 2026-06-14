@@ -24,4 +24,4 @@ AI-ERS Citizen App is an AI-powered emergency reporting platform that enables ci
 
 The Citizen App serves as the public-facing component of the AI-ERS ecosystem, helping users report emergencies while enabling faster and smarter response coordination.
 
-**Final Year Project – AI Emergency Response System (AI-ERS)**
+**project1- AI Emergency Response System (AI-ERS)**
