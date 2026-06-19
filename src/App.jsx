@@ -316,7 +316,7 @@ function App() {
         "Stay calm and ensure your immediate surroundings are safe.",
         "Stay on the line with emergency services and follow their instructions.",
         "Keep bystanders calm and avoid crowding around the affected person or area.",
-        "Call the nearest police station"
+        "Call the nearest police station "
       ];
     }
 
