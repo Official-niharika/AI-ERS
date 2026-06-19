@@ -51,6 +51,7 @@ function App() {
     Fire: "#FF9F0A",
     "Women Safety": "#AF52DE",
     Accident: "#FFD60A",
+    CrimeSecurity: "#52d9de"
   };
 
   const theme = themeMode === "dark"
@@ -74,6 +75,7 @@ function App() {
     Fire: ["Smoke", "Rapid Spread", "Trapped Inside", "Toxic Fumes", "Gas Leak"],
     "Women Safety": ["Stalking", "Harassment", "Unsafe Area", "Following Me", "Need Escort"],
     Accident: ["Vehicle Collision", "Injury", "Trapped", "Multiple Victims", "Road Blocked"],
+    CrimeSecurity:["Theft", "robbery", "burglary", "fighting", "vandalism", "suspicious activity", "kidnapping"],
   };
 
   const visibleTags = selectedEmergency ? categoryTagOptions[selectedEmergency] || [] : Object.values(categoryTagOptions).flat();
@@ -82,6 +84,7 @@ function App() {
     { label: "Fire", icon: <Flame size={22} /> },
     { label: "Women Safety", icon: <ShieldAlert size={22} /> },
     { label: "Accident", icon: <TriangleAlert size={22} /> },
+    { label: "CrimesSecurity", icon: <ShieldAlert size={22} /> },
   ];
   const activeAccent = categoryAccentMap[selectedEmergency || "Medical"] || "#0A84FF";
 
@@ -95,7 +98,7 @@ function App() {
     if (results.severity) setSeverity(results.severity);
     if (results.reasoning) setAiReasoning(results.reasoning);
     if (results.summary) setAiSummary(results.summary);
-    else if (results.reasoning) setAiSummary(`AI detected a ${results.severity || "medium"} priority incident with supporting reasoning.`);
+    else if (results.reasoning) setAiSummary(`AI detected a ${results.severity || "High"} priority incident with supporting reasoning.`);
 
     if (results.tags && Array.isArray(results.tags)) {
       const allowedTags = results.category ? categoryTagOptions[results.category] || [] : visibleTags;
@@ -107,7 +110,7 @@ function App() {
   const performHeuristicAnalysis = (description) => {
     const desc = (description || "").toLowerCase();
     let category = "Medical";
-    let severityVal = "Medium";
+    let severityVal = "High";
     let tags = [];
     let reasoning = "Detected likely emergency type from the text and mapped standard response priorities.";
 
@@ -143,12 +146,83 @@ function App() {
       if (desc.includes("chest") || desc.includes("pain")) tags.push("Chest Pain");
       if (desc.includes("breath") || desc.includes("difficulty")) tags.push("Breathing Difficulty");
       if (desc.includes("allergic")) tags.push("Allergic Reaction");
-    }
+    }else if (
+     desc.includes("theft") ||desc.includes("stolen") ||desc.includes("robbery") ||desc.includes("burglary") ||desc.includes("fight") ||desc.includes("violence") ||desc.includes("assault") ||desc.includes("attack") || desc.includes("crime") || desc.includes("vandalism") || desc.includes("suspicious") || desc.includes("kidnap") ||desc.includes("abduction") ||desc.includes("security") ||desc.includes("weapon") ||desc.includes("gun") ||desc.includes("knife") ||desc.includes("harassment") ||desc.includes("threat") ||desc.includes("intruder") ||desc.includes("break in")) {
+     category = "Crime & Security";
+     reasoning ="The report appears to describe a criminal, violent, or public security incident that may require law enforcement intervention.";
+     severityVal =
+    desc.includes("assault") ||
+    desc.includes("attack") ||
+    desc.includes("violence") ||
+    desc.includes("kidnap") ||
+    desc.includes("abduction") ||
+    desc.includes("weapon") ||
+    desc.includes("gun") ||
+    desc.includes("knife")
+      ? "High"
+      : "Medium";
+
+  if (
+    desc.includes("theft") ||
+    desc.includes("stolen") ||
+    desc.includes("robbery") ||
+    desc.includes("burglary")
+  ) {
+    tags.push("Theft/Robbery");
+  }
+
+  if (
+    desc.includes("fight") ||
+    desc.includes("violence") ||
+    desc.includes("assault") ||
+    desc.includes("attack")
+  ) {
+    tags.push("Physical Violence");
+  }
+
+  if (
+    desc.includes("suspicious") ||
+    desc.includes("intruder") ||
+    desc.includes("break in")
+  ) {
+    tags.push("Suspicious Activity");
+  }
+
+  if (
+    desc.includes("vandalism") ||
+    desc.includes("damage")
+  ) {
+    tags.push("Property Damage");
+  }
+
+  if (
+    desc.includes("kidnap") ||
+    desc.includes("abduction")
+  ) {
+    tags.push("Kidnapping");
+  }
+
+  if (
+    desc.includes("weapon") ||
+    desc.includes("gun") ||
+    desc.includes("knife")
+  ) {
+    tags.push("Weapon Involved");
+  }
+
+  if (
+    desc.includes("harassment") ||
+    desc.includes("threat")
+  ) {
+    tags.push("Harassment/Threat");
+  }
+}
 
     if (tags.length === 0) {
       if (category === "Medical") tags = ["Bleeding"];
       else if (category === "Fire") tags = ["Smoke"];
       else if (category === "Accident") tags = ["Injury"];
+      else if (category === "CrimeSecurity") tags = ["Violence"];
       else tags = ["Harassment"];
     }
 
@@ -242,6 +316,7 @@ function App() {
         "Stay calm and ensure your immediate surroundings are safe.",
         "Stay on the line with emergency services and follow their instructions.",
         "Keep bystanders calm and avoid crowding around the affected person or area.",
+        "Call the nearest police station"
       ];
     }
 
