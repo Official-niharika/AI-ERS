@@ -529,28 +529,7 @@ function App() {
 
           {activeTab === "Dashboard" && (
             <>
-          {/* HERO METRICS */}
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {[
-              { label: "System Status: Operational", value: "696", icon: ShieldCheck, accent: "#10B981" },
-              { label: "Active Responders", value: "335", icon: Activity, accent: "#0A84FF" },
-              { label: "Incidents Resolved Today", value: "10", icon: Check, accent: "#A1A1AA" },
-              { label: "Est. Response Time", value: "7 min", icon: Clock, accent: "#FF9F0A" },
-            ].map((stat) => {
-              const Icon = stat.icon;
-              return (
-                <div key={stat.label} className={`${cardClass} p-4`}>
-                  <div className="flex items-center gap-2">
-                    <div className="rounded-lg p-1.5" style={{ color: stat.accent, background: `${stat.accent}1A` }}>
-                      <Icon size={16} />
-                    </div>
-                    <span className={`text-2xl font-bold tracking-tight ${headingText}`}>{stat.value}</span>
-                  </div>
-                  <p className={`mt-2 text-xs ${subtleText}`}>{stat.label}</p>
-                </div>
-              );
-            })}
-          </div>
+          
 
           {/* REPORT AN EMERGENCY */}
           <div className={`${cardClass} p-5`}>
